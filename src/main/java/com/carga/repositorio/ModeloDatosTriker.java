@@ -100,7 +100,9 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
          CursorConsulta.beforeFirst();
          while( CursorConsulta.next() ) {
             RegistroTrx.setAsk( CursorConsulta.getString( "" ) );
-            
+            RegistroTrx.setBid( CursorConsulta.getString( 1 ) );
+            RegistroTrx.setBook(CursorConsulta.getString( 2 ) );
+            RegistroTrx.setChange_24(CursorConsulta.getString( 3 ) );
             Trx.add( RegistroTrx ) ;
          }
          
