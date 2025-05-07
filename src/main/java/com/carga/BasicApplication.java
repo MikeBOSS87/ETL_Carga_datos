@@ -7,7 +7,10 @@ import org.apache.logging.log4j.LogManager ;
 
 import com.carga.modelo.TTResumenCripto;
 import com.carga.consumidor.SW ;
+import com.carga.modelo.GridComVts;
 import com.carga.repositorio.ModeloDatosTriker;
+import com.carga.repositorio.Parametrisaciones;
+import java.util.ArrayList;
 
 public class BasicApplication{
    
@@ -16,6 +19,8 @@ public class BasicApplication{
    public static void main(String[] args) {
       SW sw = new SW() ;
       ModeloDatosTriker repo = new ModeloDatosTriker() {} ;
+      Parametrisaciones P = new Parametrisaciones() ;
+      ArrayList<String> param = new ArrayList() ;
       try{
          Long horaInicio = System.currentTimeMillis() ;
          loger.info( "Comienza en: " + ( new Date().toString() ) );
@@ -24,7 +29,15 @@ public class BasicApplication{
          loger.info( "borrado de la tabla ejecutando " + BorraTabla );
          
          loger.info( "Genera consulta" );
-         repo.ConsultaInfo( 34 ) ;
+         param.add( "eth_mxn" ) ;
+         param.add( "trx_mxn" ) ;
+         param.add( "ada_usd" ) ;
+         param.add( "mana_mxn" ) ;
+         param.add( "btc_mxn" ) ;
+         List<GridComVts> TrxComVta = P.ObtenTrxCompraVenta( param );
+         for( GridComVts RegistroTrx : TrxComVta ){
+            loger.info( RegistroTrx.getTrx() + " " + RegistroTrx.getTipoIntercambio() + " " + RegistroTrx.getMontoCripto() + " " + RegistroTrx.getValorCripto() );
+         }
          
          loger.info( "consumo de SW" );
          List<TTResumenCripto> Trx = sw.Trx();

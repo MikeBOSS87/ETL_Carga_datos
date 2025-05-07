@@ -5,14 +5,11 @@
 package com.carga.repositorio;
 
 import java.util.List;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.sql.Types;
 import java.sql.ResultSet;
@@ -29,32 +26,16 @@ import com.carga.modelo.TTResumenCripto;
  */
 public abstract class ModeloDatosTriker implements ModeloProceso {
    
-   private DataSource Nexus = null ;
-   private Connection C = null ;
+   private OrigenesDatos Nexus = null ;
    private static final Logger loger = LogManager.getLogger( ModeloDatosTriker.class ) ;   
-   
-   public ModeloDatosTriker(){
-      try {
-         GeneraConexion();
-      } catch ( SQLException ex ) {
-         loger.info( "No se genero la conexion JDBC " + ex );
-      }
-   }
-   
-   private void GeneraConexion() throws SQLException{
-      DataSourceBuilder dsb = DataSourceBuilder.create();
-      dsb.driverClassName(  "oracle.jdbc.OracleDriver" );
-      dsb.url( "jdbc:oracle:thin:@localhost:1521:ATLBD" );
-      dsb.username( "USRPUENTE" );
-      dsb.password("Puente");
-      
-      Nexus = dsb.build();
-      C = Nexus.getConnection() ;
+
+   public ModeloDatosTriker() {
+      Nexus = new OrigenesDatos() ;
    }
    
    @Override
    public void GuardaTodo( List< TTResumenCripto > Entidades ) throws Exception{
-      SimpleJdbcInsert tabla = new SimpleJdbcInsert( Nexus )
+      SimpleJdbcInsert tabla = new SimpleJdbcInsert( Nexus.DS() )
                .withSchemaName( "MDRG" )
                .withTableName( "TTRESUMENCRIPTO" )
                .usingColumns( 
@@ -74,7 +55,7 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
 
    @Override
    public String BorraTabla(  ) throws Exception {
-      SimpleJdbcCall SP = new SimpleJdbcCall( Nexus )
+      SimpleJdbcCall SP = new SimpleJdbcCall( Nexus.DS() )
 					.withSchemaName( "MDRG" )
 					.withCatalogName( "UTILERIAS" )
 					.withProcedureName( "SPBORRARTABLA" )
@@ -94,7 +75,7 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
       List< TTResumenCripto > Trx = null ;
       TTResumenCripto RegistroTrx = null ;
       try {
-         CallableStatement Consulta = C.prepareCall( "" , ResultSet.CONCUR_READ_ONLY,  ResultSet.TYPE_SCROLL_INSENSITIVE ) ;
+         CallableStatement Consulta = Nexus.OldJDBC().prepareCall( "" , ResultSet.CONCUR_READ_ONLY,  ResultSet.TYPE_SCROLL_INSENSITIVE ) ;
          ResultSet CursorConsulta = Consulta.executeQuery();
          
          CursorConsulta.beforeFirst();
@@ -106,7 +87,7 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
             Trx.add( RegistroTrx ) ;
          }
          
-         C.close();
+         Nexus.OldJDBC().close();
       } catch( SQLException ex ) {
          loger.info( "No se genero la consulta " + ex );
          System.exit( 1 ) ;
