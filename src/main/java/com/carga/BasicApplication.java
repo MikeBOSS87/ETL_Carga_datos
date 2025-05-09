@@ -1,7 +1,11 @@
 package com.carga;
 
-import java.util.Date;
+
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Date;
 import org.apache.logging.log4j.Logger ;
 import org.apache.logging.log4j.LogManager ;
 
@@ -10,7 +14,6 @@ import com.carga.consumidor.SW ;
 import com.carga.modelo.GridComVts;
 import com.carga.repositorio.ModeloDatosTriker;
 import com.carga.repositorio.Parametrisaciones;
-import java.util.ArrayList;
 
 public class BasicApplication{
    
@@ -20,7 +23,13 @@ public class BasicApplication{
       SW sw = new SW() ;
       ModeloDatosTriker repo = new ModeloDatosTriker() {} ;
       Parametrisaciones P = new Parametrisaciones() ;
+      
+      Map<String, Object> ParametrosQuery = new HashMap<String, Object>() ;
       ArrayList<String> param = new ArrayList() ;
+      
+      ParametrosQuery.put( "Fecha", "01-05-2025" ) ;
+      ParametrosQuery.put( "IdMercados" ,  param ) ;
+      
       try{
          Long horaInicio = System.currentTimeMillis() ;
          loger.info( "Comienza en: " + ( new Date().toString() ) );
@@ -34,7 +43,10 @@ public class BasicApplication{
          param.add( "ada_usd" ) ;
          param.add( "mana_mxn" ) ;
          param.add( "btc_mxn" ) ;
-         List<GridComVts> TrxComVta = P.ObtenTrxCompraVenta( param );
+         List<GridComVts> TrxComVta = P.ObtenTrxCompraVenta( ParametrosQuery );
+         
+         loger.info( "Registros obtenidos: " + TrxComVta.size() );
+         
          for( GridComVts RegistroTrx : TrxComVta ){
             loger.info( RegistroTrx.getTrx() + " " + RegistroTrx.getTipoIntercambio() + " " + RegistroTrx.getMontoCripto() + " " + RegistroTrx.getValorCripto() );
          }
