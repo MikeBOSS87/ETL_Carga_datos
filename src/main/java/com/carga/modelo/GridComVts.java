@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 @Getter
 @Setter

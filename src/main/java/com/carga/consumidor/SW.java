@@ -1,23 +1,24 @@
 
 package com.carga.consumidor;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate ;
+import org.springframework.http.ResponseEntity;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.apache.logging.log4j.Logger ;
-import org.apache.logging.log4j.LogManager ;
 import java.lang.reflect.Type;
 import java.util.List;
+import org.apache.logging.log4j.Logger ;
+import org.apache.logging.log4j.LogManager ;
+
 import com.carga.modelo.TTResumenCripto;
 import com.carga.modelo.Ticker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestClientException;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 public class SW {
    

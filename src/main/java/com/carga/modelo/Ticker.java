@@ -10,11 +10,11 @@ import lombok.Setter;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 @Getter
 @Setter
 public class Ticker {
-   @Getter @Setter private Boolean success ;
-	@Getter @Setter private List< TTResumenCripto > payload ;
+   private Boolean success ;
+	private List< TTResumenCripto > payload ;
 }

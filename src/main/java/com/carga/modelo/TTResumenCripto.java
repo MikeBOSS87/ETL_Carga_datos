@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 @Getter
 @Setter
@@ -19,12 +19,12 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 public class TTResumenCripto{
 
-   private Integer id_ ;
+   private Integer unique ;
    private String ask ;
 	private String bid ;
-   private String book ;
+   private String libro ;
    private String change_24 ;
-	private String created_at ;
+	private String FechaOpe ;
    private String high ;
    private String last ;
 	private String low ;

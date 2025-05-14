@@ -4,23 +4,23 @@
  */
 package com.carga.repositorio;
 
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 @Repository
 public class OrigenesDatos {
    
-   private DataSource Nexus = null ;
+   private HikariDataSource DS ;
    private Connection C = null ;
    private static final Logger loger = LogManager.getLogger( ModeloDatosTriker.class ) ;   
    
@@ -33,19 +33,20 @@ public class OrigenesDatos {
    }
    
    private void GeneraConexion() throws SQLException{
-      DataSourceBuilder dsb = DataSourceBuilder.create();
-      dsb.driverClassName(  "oracle.jdbc.OracleDriver" );
-      dsb.url( "jdbc:oracle:thin:@localhost:1521:ATLBD" );
-      dsb.username( "USRPUENTE" );
-      dsb.password("Puente");
-      
-      Nexus = dsb.build();
-      C = Nexus.getConnection() ;
+      DS = new HikariDataSource() ;
+      DS.setDriverClassName( "oracle.jdbc.OracleDriver" );
+      DS.setJdbcUrl( "jdbc:oracle:thin:@localhost:1521:ATLBD" );
+      DS.setUsername( "USRPUENTE" );
+      DS.setPassword( "Puente" );
+      DS.setPoolName( "Nexus_DB" );
+      DS.setConnectionTimeout( 8000 );
+      DS.setLoginTimeout( 5 );
+      DS.getConnection().close();
    }
    
    @Autowired
    public DataSource DS(){
-      return Nexus ;
+      return DS ;
    }
    
    @Autowired

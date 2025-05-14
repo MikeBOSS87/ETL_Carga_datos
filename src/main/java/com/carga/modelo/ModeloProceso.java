@@ -1,10 +1,11 @@
 package com.carga.modelo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 public interface ModeloProceso {
    
@@ -13,4 +14,7 @@ public interface ModeloProceso {
    public String BorraTabla(  ) throws Exception ;
    
    public void GuardaTodo( List< TTResumenCripto > Entidades ) throws Exception ;
+   
+   public List< GridComVts > ConsultaInfoComVta( Map<String, Object> filtroQuery )throws Exception ;
+   
 }

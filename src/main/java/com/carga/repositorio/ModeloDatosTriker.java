@@ -4,6 +4,7 @@
  */
 package com.carga.repositorio;
 
+import com.carga.modelo.GridComVts;
 import java.util.List;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
@@ -19,10 +20,12 @@ import org.apache.logging.log4j.LogManager ;
 
 import com.carga.modelo.ModeloProceso;
 import com.carga.modelo.TTResumenCripto;
+import java.util.Map;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  *
- * @author chief
+ * @author MIGUEL DARIO RESENDIZ GUTIERREZ
  */
 public abstract class ModeloDatosTriker implements ModeloProceso {
    
@@ -82,8 +85,8 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
          while( CursorConsulta.next() ) {
             RegistroTrx.setAsk( CursorConsulta.getString( "" ) );
             RegistroTrx.setBid( CursorConsulta.getString( 1 ) );
-            RegistroTrx.setBook(CursorConsulta.getString( 2 ) );
-            RegistroTrx.setChange_24(CursorConsulta.getString( 3 ) );
+            RegistroTrx.setLibro( CursorConsulta.getString( 2 ) );
+            RegistroTrx.setChange_24( CursorConsulta.getString( 3 ) );
             Trx.add( RegistroTrx ) ;
          }
          
@@ -93,5 +96,32 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
          System.exit( 1 ) ;
       }
       return Trx ;
+   }
+   
+   
+   public List< GridComVts > ConsultaInfoComVta( Map<String, Object> filtroQuery )throws Exception {
+      NamedParameterJdbcTemplate npjdbct = new NamedParameterJdbcTemplate( Nexus .DS() ) ;
+      
+      List< GridComVts > trx = npjdbct.query(   "SELECT T.TRXID\n" +
+                                                "   , T.INTERCAMBIO\n" +
+                                                "   , T.MONTO\n" +
+                                                "   , T.TIPOTRX\n" +
+                                                "   , T.PRECIO\n" +
+                                                "   , TO_CHAR( T.FECHATRXTZ, 'DD-MM-YYYY HH12:MI:SS PM' ) FECHALOCAL\n" +
+                                                "   , TO_CHAR( T.FECHAALTA, 'DD-MM-YYYY HH12:MI:SS PM' ) FECHAINSERCION\n" +
+                                                "FROM MDRG.TATRXBITSO T \n" +
+                                                "WHERE TRUNC( T.FECHATRXTZ ) = TO_DATE( :Fecha, 'DD-MM-YYYY' )\n" +
+                                                "   AND T.INTERCAMBIO IN( :IdMercados )\n" +
+                                                "ORDER BY T.TRXID DESC, T.INTERCAMBIO ",
+         filtroQuery,
+         ( rs, rowNum ) -> new GridComVts( rs.getInt( "TRXID" )
+            , rs.getString("INTERCAMBIO" )
+            , rs.getDouble("MONTO" )
+            , rs.getString( "TIPOTRX" )
+            , rs.getString( "PRECIO" )
+            , rs.getString( "FECHALOCAL" )
+            , rs.getString( "FECHAINSERCION" ) ) );
+
+    return trx;
    }
 }
