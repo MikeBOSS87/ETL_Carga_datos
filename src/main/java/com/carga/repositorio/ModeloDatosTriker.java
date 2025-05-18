@@ -4,24 +4,25 @@
  */
 package com.carga.repositorio;
 
-import com.carga.modelo.GridComVts;
 import java.util.List;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import java.util.Map;
 import java.sql.CallableStatement;
 import java.sql.Types;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.apache.logging.log4j.Logger ;
 import org.apache.logging.log4j.LogManager ;
 
 import com.carga.modelo.ModeloProceso;
 import com.carga.modelo.TTResumenCripto;
-import java.util.Map;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import com.carga.modelo.GridComVts;
 
 /**
  *
@@ -85,7 +86,7 @@ public abstract class ModeloDatosTriker implements ModeloProceso {
          while( CursorConsulta.next() ) {
             RegistroTrx.setAsk( CursorConsulta.getString( "" ) );
             RegistroTrx.setBid( CursorConsulta.getString( 1 ) );
-            RegistroTrx.setLibro( CursorConsulta.getString( 2 ) );
+            RegistroTrx.setBook( CursorConsulta.getString( 2 ) );
             RegistroTrx.setChange_24( CursorConsulta.getString( 3 ) );
             Trx.add( RegistroTrx ) ;
          }

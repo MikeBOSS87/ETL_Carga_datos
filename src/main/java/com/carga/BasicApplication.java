@@ -1,6 +1,5 @@
 package com.carga;
 
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,8 +8,8 @@ import java.util.Date;
 import org.apache.logging.log4j.Logger ;
 import org.apache.logging.log4j.LogManager ;
 
-import com.carga.modelo.TTResumenCripto;
 import com.carga.consumidor.SW ;
+import com.carga.modelo.TTResumenCripto;
 import com.carga.modelo.GridComVts;
 import com.carga.repositorio.ModeloDatosTriker;
 
@@ -44,12 +43,6 @@ public class BasicApplication{
          List<GridComVts> TrxComVta = repo.ConsultaInfoComVta( ParametrosQuery );
          
          loger.info( "Registros obtenidos: " + TrxComVta.size() );
-         
-         for( GridComVts RegistroTrx : TrxComVta ){
-            loger.info( RegistroTrx.getTrx() + " " + RegistroTrx.getTipoIntercambio() + " " + RegistroTrx.getMontoCripto() + " " + RegistroTrx.getValorCripto() );
-         }
-         
-         loger.info( "consumo de SW" );
          List<TTResumenCripto> Trx = sw.Trx();
 
          loger.info( "Termina el consumo del api y comienza el guardado en Oracle" );

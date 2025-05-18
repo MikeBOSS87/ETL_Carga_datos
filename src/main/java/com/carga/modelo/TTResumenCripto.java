@@ -22,9 +22,9 @@ public class TTResumenCripto{
    private Integer unique ;
    private String ask ;
 	private String bid ;
-   private String libro ;
+   private String book ;
    private String change_24 ;
-	private String FechaOpe ;
+	private String created_at ;
    private String high ;
    private String last ;
 	private String low ;

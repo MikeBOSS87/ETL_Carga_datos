@@ -6,7 +6,7 @@ package com.carga.repositorio;
  **/
 public class Parametrisaciones {
 
-   private OrigenesDatos OD ;
+   private final OrigenesDatos OD ;
    
    public Parametrisaciones() {
       OD = new OrigenesDatos() ;
